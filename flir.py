@@ -141,8 +141,8 @@ class CustomDataset(utils.Dataset):
             objects = [s['region_attributes'] for s in a['regions']]
             num_ids = []
             for n in objects:
-                print one
-                print n
+                print(one)
+                print(n)
                 try:
                     if n['object'] == 'car':
                         num_ids.append(1)
