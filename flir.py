@@ -138,11 +138,13 @@ class CustomDataset(utils.Dataset):
             # the outline of each object instance. There are stores in the
             # shape_attributes (see json format above)
             polygons = [r['shape_attributes'] for r in a['regions']]
-            objects = [s['region_attributes'] for s in a['regions']]
-            num_ids = []
+            objects = [s['region_attributes']['name'] for s in a['regions']]
+            name_dict = {"car": 1,"human": 2,"Tree": 3,"chair": 4,"table": 5,"street light": 6,"lamp post": 7,"Traffic Signal": 8,"house": 9,"sign board": 10,"Unknown obj": 11}
+            # key = tuple(name_dict)
+            num_ids = [name_dict[a] for a in objects]
             for n in objects:
-                print(one)
-                print(n)
+                # print one
+                # print n
                 try:
                     if n['object'] == 'car':
                         num_ids.append(1)
@@ -164,7 +166,7 @@ class CustomDataset(utils.Dataset):
                         num_ids.append(9)
                     elif n['object'] == 'sign board':
                         num_ids.append(10)
-                    elif n['object'] == 'Unknown obj
+                    elif n['object'] == 'Unknown obj':
                         num_ids.append(11)
                 except:
                     pass
