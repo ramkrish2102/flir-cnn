@@ -69,7 +69,7 @@ class CustomConfig(Config):
     IMAGES_PER_GPU = 1
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 11 # Background + classes
+    NUM_CLASSES = 1 + 10 # Background + classes
 
     # Number of training steps per epoch
     STEPS_PER_EPOCH = 100
@@ -91,17 +91,17 @@ class CustomDataset(utils.Dataset):
         """
         
         # Add 80 classes from JSON file.
-        self.add_class("object",1,"car")
-        self.add_class("object",2,"human")
+        self.add_class("object",1,"Car")
+        self.add_class("object",2,"Person")
         self.add_class("object",3,"Tree")
-        self.add_class("object",4,"chair")
-        self.add_class("object",5,"table")
-        self.add_class("object",6,"stret light")
-        self.add_class("object",7,"lamp post")
+        self.add_class("object",4,"Chair")
+        self.add_class("object",5,"Table")
+        self.add_class("object",6,"Street Light")
+        self.add_class("object",7,"Lamp Post")
         self.add_class("object",8,"Traffic Signal")
-        self.add_class("object",9,"house")
-        self.add_class("object",10,"sign board")
-        self.add_class("object",11,"Unknown obj")
+        self.add_class("object",9,"House")
+        self.add_class("object",10,"Sign Board")
+       
         
 
         # Train or validation dataset?
@@ -129,7 +129,7 @@ class CustomDataset(utils.Dataset):
 
         # The VIA tool saves images in the JSON even if they don't have any
         # annotations. Skip unannotated images.
-        # annotations = [a for a in annotations if a['regions']]
+        annotations = [a for a in annotations if a['regions']]
 
         # Add images
         for a in annotations:
@@ -139,35 +139,33 @@ class CustomDataset(utils.Dataset):
             # shape_attributes (see json format above)
             polygons = [r['shape_attributes'] for r in a['regions']]
             objects = [s['region_attributes']['name'] for s in a['regions']]
-            name_dict = {"car": 1,"human": 2,"Tree": 3,"chair": 4,"table": 5,"street light": 6,"lamp post": 7,"Traffic Signal": 8,"house": 9,"sign board": 10,"Unknown obj": 11}
+            name_dict = {"car": 1,"Person": 2,"Tree": 3,"Chair": 4,"Table": 5,"Street Light": 6,"Lamp Post": 7,"Traffic Signal": 8,"house": 9,"Sign Board": 10}
             # key = tuple(name_dict)
             num_ids = [name_dict[a] for a in objects]
             for n in objects:
                 # print one
                 # print n
                 try:
-                    if n['object'] == 'car':
+                    if n['object'] == 'Car':
                         num_ids.append(1)
-                    elif n['object'] == 'human':
+                    elif n['object'] == 'Person':
                         num_ids.append(2)
                     elif n['object'] == 'Tree':
                         num_ids.append(3)
-                    elif n['object'] == 'chair':
+                    elif n['object'] == 'Chair':
                         num_ids.append(4)
-                    elif n['object'] == 'table':
+                    elif n['object'] == 'Table':
                         num_ids.append(5)
-                    elif n['object'] == 'street light':
+                    elif n['object'] == 'Street Light':
                         num_ids.append(6)
-                    elif n['object'] == 'lamp post':
+                    elif n['object'] == 'Lamp Post':
                         num_ids.append(7)
                     elif n['object'] == 'Traffic Signal':
                         num_ids.append(8)
                     elif n['object'] == 'house':
                         num_ids.append(9)
-                    elif n['object'] == 'sign board':
-                        num_ids.append(10)
-                    elif n['object'] == 'Unknown obj':
-                        num_ids.append(11)
+                    elif n['object'] == 'Sign Board':
+                        num_ids.append(10)                    
                 except:
                     pass
 
